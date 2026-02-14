@@ -42,6 +42,7 @@ runs:
           if: ${{ inputs.build-pdf }}
           uses: zauguin/install-texlive@v2
           with:
+            cache_version: 1
             packages: >
               latex latex-bin xetex tcolorbox pgf tools environ etoolbox pdfcol ltxcmds infwarerr iftex parskip caption
               float xcolor geometry amsmath upquote eurosym ucs fontspec unicode-math fancyvrb grffile adjustbox hyperref
@@ -75,7 +76,7 @@ runs:
             . .venv/bin/activate
             jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ${{inputs.filename}}
             jupyter nbconvert --execute --to notebook --inplace ${{inputs.filename}}
-            jupyter nbconvert ${{inputs.filename}} --TagRemovePreprocessor.remove_input_tags='html_only' --TagRemovePreprocessor.remove_cell_tags='latex_only' --TagRemovePreprocessor.remove_cell_tags='no_html' --to html --template classic --output-dir _site --output index
+            jupyter nbconvert ${{inputs.filename}} --TagRemovePreprocessor.remove_input_tags='latex_only' --TagRemovePreprocessor.remove_cell_tags='html_only' --TagRemovePreprocessor.remove_cell_tags='no_latex' --to pdf
             jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ${{inputs.filename}}
         - name: Copy attachments
           if: ${{ inputs.attachments != '' }} 
@@ -84,8 +85,17 @@ runs:
             for f in ${{ inputs.attachments }}; do
             cp ${f} _site
             done  
+        - name: Copy PDF to _site
+          if: ${{ inputs.build-pdf }}
+          shell: bash
+          run: |
+            PDF_FILE="${{ inputs.filename }}"
+            PDF_FILE="${PDF_FILE%.ipynb}.pdf"
+            if [ -f "$PDF_FILE" ]; then
+              cp "$PDF_FILE" _site/
+            fi
         - name: Publish to GH Pages
-          if: ${{ inputs.publish-ghpages }}
+          if: ${{ inputs.publish-ghpages == 'true' }}
           shell: bash
           run: |
             . .venv/bin/activate
