@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lint GitHub Action files
-        uses: rhysd/actionlint@v1
+        uses: rhysd/actionlint@v1.7.12
 
       - name: Set up Python
         uses: actions/setup-python@v5
