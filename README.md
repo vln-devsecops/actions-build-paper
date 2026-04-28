@@ -16,7 +16,7 @@ The time it took to run the build
 ## Example use
 
 ```yaml
-uses: blykerchan/build-paper@v1
+uses: vln-devsecops/actions-build-paper@v1
 with:
     filename: somename.ipynb
 ```
