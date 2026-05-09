@@ -18,7 +18,7 @@ inputs:
         required: true
         default: '3.10'
     pandoc-version:
-        description: 'Version of Python to use'
+        description: 'Version of Pandoc to use'
         required: true
         default: '2.19'
     attachments:
