@@ -18,7 +18,7 @@ inputs:
         required: true
         default: '3.10'
     pandoc-version:
-        description: 'Version of Python to use'
+        description: 'Version of Pandoc to use'
         required: true
         default: '2.19'
     attachments:
@@ -32,7 +32,7 @@ inputs:
 runs:
     using: 'composite'
     steps:
-        - uses: actions/setup-python@v5
+        - uses: actions/setup-python@v6
           with:
             python-version: ${{ inputs.python-version }}
         - uses: pandoc/actions/setup@main
@@ -102,6 +102,8 @@ runs:
             ghp-import -n -p -f _site
         - name: publish artifacts
           uses: actions/upload-artifact@v4
+          env:
+            FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
           with:
             name: paper
             path: _site

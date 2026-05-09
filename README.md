@@ -16,13 +16,12 @@ The time it took to run the build
 ## Example use
 
 ```yaml
-uses: blykerchan/build-paper@v1
+uses: vln-devsecops/actions-build-paper@v1
 with:
     filename: somename.ipynb
 ```
 
-## Building the action
-```
-npm i -g @vercel/ncc
-npm run build
+## Running tests
+```bash
+python -m unittest discover -s tests -p 'test_*.py'
 ```
