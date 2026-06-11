@@ -1,0 +1,15 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "componentid": "actions-build-paper",
+      "changelog-type": "github",
+      "bump-minor-pre-major": true,
+      "draft": false,
+      "prerelease": false,
+      "groups": [
+        { "kind": "actions" }
+      ]
+    }
+  }
+}
