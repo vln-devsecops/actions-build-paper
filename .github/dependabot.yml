@@ -10,10 +10,6 @@ updates:
     labels:
       - dependencies
       - python
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
   - package-ecosystem: github-actions
     directory: /
     target-branch: dev
@@ -23,6 +19,3 @@ updates:
     labels:
       - dependencies
       - github-actions
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
