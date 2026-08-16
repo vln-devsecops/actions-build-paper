@@ -40,7 +40,7 @@ runs:
             version: ${{ inputs.pandoc-version }}
         - name: Install TeX Live
           if: ${{ inputs.build-pdf }}
-          uses: zauguin/install-texlive@v2
+          uses: zauguin/install-texlive@v4
           with:
             cache_version: 1
             packages: >
