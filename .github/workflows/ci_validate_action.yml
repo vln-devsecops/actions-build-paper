@@ -31,3 +31,59 @@ jobs:
 
       - name: Run unit tests
         run: python -m unittest discover -s tests -p 'test_*.py'
+
+  # These run the real composite action against a fixture notebook instead of
+  # asserting action.yml's literal contents, so a version bump (setup-python,
+  # upload-artifact, install-texlive, ...) only breaks this if it actually
+  # breaks the build - not just because a pinned string changed.
+  integration-html-only:
+    name: Integration (HTML only)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build the fixture paper (HTML only)
+        uses: ./
+        with:
+          filename: tests/fixtures/paper.ipynb
+          requirements-txt: tests/fixtures/requirements.txt
+          attachments: tests/fixtures/attachment.txt
+          build-pdf: false
+
+      - name: Assert generated site content
+        run: |
+          set -euo pipefail
+          test -f _site/index.html
+          grep -q FUNCTIONAL_TEST_MARKER_COMMON _site/index.html
+          grep -q FUNCTIONAL_TEST_MARKER_NO_LATEX _site/index.html
+          ! grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html
+          test -f _site/attachment.txt
+          test ! -f _site/paper.pdf
+
+  integration-full:
+    name: Integration (HTML + PDF)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build the fixture paper (HTML + PDF)
+        uses: ./
+        with:
+          filename: tests/fixtures/paper.ipynb
+          requirements-txt: tests/fixtures/requirements.txt
+          attachments: tests/fixtures/attachment.txt
+          build-pdf: true
+
+      - name: Assert generated site content
+        run: |
+          set -euo pipefail
+          test -f _site/index.html
+          grep -q FUNCTIONAL_TEST_MARKER_COMMON _site/index.html
+          grep -q FUNCTIONAL_TEST_MARKER_NO_LATEX _site/index.html
+          ! grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html
+          test -f _site/attachment.txt
+          test -s _site/paper.pdf

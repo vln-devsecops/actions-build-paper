@@ -62,7 +62,9 @@ class ActionConfigurationTests(unittest.TestCase):
         self.assertEqual(self.step("Copy PDF to _site")["if"], "${{ inputs.build-pdf }}")
 
         python_setup = next(
-            step for step in self.steps if step.get("uses") == "actions/setup-python@v6"
+            step
+            for step in self.steps
+            if step.get("uses", "").startswith("actions/setup-python@")
         )
         self.assertEqual(
             python_setup["with"]["python-version"], "${{ inputs.python-version }}"
@@ -140,7 +142,7 @@ class ActionConfigurationTests(unittest.TestCase):
         )
 
         artifact_step = self.step("publish artifacts")
-        self.assertEqual(artifact_step["uses"], "actions/upload-artifact@v7")
+        self.assertTrue(artifact_step["uses"].startswith("actions/upload-artifact@"))
         self.assertEqual(artifact_step["with"]["name"], "paper")
         self.assertEqual(artifact_step["with"]["path"], "_site")
         self.assertEqual(
