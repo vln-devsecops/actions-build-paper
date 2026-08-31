@@ -58,7 +58,10 @@ jobs:
           test -f _site/index.html
           grep -q FUNCTIONAL_TEST_MARKER_COMMON _site/index.html
           grep -q FUNCTIONAL_TEST_MARKER_NO_LATEX _site/index.html
-          ! grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html
+          if grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html; then
+            echo "no_html-tagged cell leaked into the HTML output" >&2
+            exit 1
+          fi
           test -f _site/attachment.txt
           test ! -f _site/paper.pdf
 
@@ -84,6 +87,9 @@ jobs:
           test -f _site/index.html
           grep -q FUNCTIONAL_TEST_MARKER_COMMON _site/index.html
           grep -q FUNCTIONAL_TEST_MARKER_NO_LATEX _site/index.html
-          ! grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html
+          if grep -q FUNCTIONAL_TEST_MARKER_NO_HTML _site/index.html; then
+            echo "no_html-tagged cell leaked into the HTML output" >&2
+            exit 1
+          fi
           test -f _site/attachment.txt
           test -s _site/paper.pdf
