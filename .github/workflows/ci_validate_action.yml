@@ -13,10 +13,7 @@ permissions:
 
 jobs:
   validate:
-    # pull_request runs untrusted fork code, so it stays on ubuntu-latest.
-    # push only fires on dev/main, which only trusted pushes reach, so those
-    # runs use the self-hosted littlemonarch runner.
-    runs-on: ${{ github.event_name == 'push' && fromJSON('["self-hosted", "linux", "x64"]') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
