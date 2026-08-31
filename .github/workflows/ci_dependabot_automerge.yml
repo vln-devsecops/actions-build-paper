@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   automerge:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     # The PR's author, not github.actor. github.actor is whoever triggered
     # the event, so on `reopened` - or when anyone else pushes to the branch -
     # it is that person, this condition goes false, and the job silently does
