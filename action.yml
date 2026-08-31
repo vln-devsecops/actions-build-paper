@@ -39,7 +39,7 @@ runs:
           with:
             version: ${{ inputs.pandoc-version }}
         - name: Install TeX Live
-          if: ${{ inputs.build-pdf }}
+          if: ${{ inputs.build-pdf == 'true' }}
           uses: zauguin/install-texlive@v4
           with:
             cache_version: 1
@@ -48,7 +48,7 @@ runs:
               float xcolor geometry amsmath upquote eurosym ucs fontspec unicode-math fancyvrb grffile adjustbox hyperref
               titling booktabs enumitem ulem soul kvoptions amsfonts metafont jknapltx
         - name: install missing fonts for PDF generation
-          if: ${{ inputs.build-pdf }}
+          if: ${{ inputs.build-pdf == 'true' }}
           run: tlmgr install collection-fontsrecommended
           shell: bash
         - name: build the paper - install prerequisites
@@ -69,7 +69,7 @@ runs:
             jupyter nbconvert ${{inputs.filename}} --TagRemovePreprocessor.remove_input_tags='html_only' --TagRemovePreprocessor.remove_cell_tags='latex_only' --TagRemovePreprocessor.remove_cell_tags='no_html' --to html --template classic --output-dir _site --output index
             jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ${{inputs.filename}}
         - name: build - the paper - PDF
-          if: ${{ inputs.build-pdf }}
+          if: ${{ inputs.build-pdf == 'true' }}
           shell: bash
           run: |
             python3 -m venv .venv
@@ -86,7 +86,7 @@ runs:
             cp ${f} _site
             done  
         - name: Copy PDF to _site
-          if: ${{ inputs.build-pdf }}
+          if: ${{ inputs.build-pdf == 'true' }}
           shell: bash
           run: |
             PDF_FILE="${{ inputs.filename }}"

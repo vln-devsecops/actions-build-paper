@@ -53,13 +53,19 @@ class ActionConfigurationTests(unittest.TestCase):
                 )
 
     def test_setup_steps_bind_tool_versions_to_inputs(self):
-        self.assertEqual(self.step("Install TeX Live")["if"], "${{ inputs.build-pdf }}")
+        self.assertEqual(
+            self.step("Install TeX Live")["if"], "${{ inputs.build-pdf == 'true' }}"
+        )
         self.assertEqual(
             self.step("install missing fonts for PDF generation")["if"],
-            "${{ inputs.build-pdf }}",
+            "${{ inputs.build-pdf == 'true' }}",
         )
-        self.assertEqual(self.step("build - the paper - PDF")["if"], "${{ inputs.build-pdf }}")
-        self.assertEqual(self.step("Copy PDF to _site")["if"], "${{ inputs.build-pdf }}")
+        self.assertEqual(
+            self.step("build - the paper - PDF")["if"], "${{ inputs.build-pdf == 'true' }}"
+        )
+        self.assertEqual(
+            self.step("Copy PDF to _site")["if"], "${{ inputs.build-pdf == 'true' }}"
+        )
 
         python_setup = next(
             step
