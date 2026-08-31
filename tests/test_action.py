@@ -140,7 +140,7 @@ class ActionConfigurationTests(unittest.TestCase):
         )
 
         artifact_step = self.step("publish artifacts")
-        self.assertEqual(artifact_step["uses"], "actions/upload-artifact@v4")
+        self.assertEqual(artifact_step["uses"], "actions/upload-artifact@v7")
         self.assertEqual(artifact_step["with"]["name"], "paper")
         self.assertEqual(artifact_step["with"]["path"], "_site")
         self.assertEqual(
